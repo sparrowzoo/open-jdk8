@@ -246,9 +246,9 @@ else
 endif
 
 # Compiler warnings are treated as errors
-ifneq ($(COMPILER_WARNINGS_FATAL),false)
-  WARNINGS_ARE_ERRORS = -Werror
-endif
+#ifneq ($(COMPILER_WARNINGS_FATAL),false)
+#  WARNINGS_ARE_ERRORS = -Werror
+#endif
 
 ifeq ($(USE_CLANG), true)
   # However we need to clean the code up before we can unrestrictedly enable this option with Clang
@@ -327,11 +327,14 @@ endif
 
 # Flags for generating make dependency flags.
 DEPFLAGS = -MMD -MP -MF $(DEP_DIR)/$(@:%=%.d)
-ifeq ($(USE_CLANG),)
-  ifneq ($(CC_VER_MAJOR), 2)
-    DEPFLAGS += -fpch-deps
-  endif
-endif
+#ifeq ($(USE_CLANG),)
+#  ifneq ($(CC_VER_MAJOR), 2)
+#    DEPFLAGS += -fpch-deps
+#  endif
+#endif
+
+LFLAGS += -stdlib=libstdc++
+
 
 # -DDONT_USE_PRECOMPILED_HEADER will exclude all includes in precompiled.hpp.
 ifeq ($(USE_PRECOMPILED_HEADER),0)

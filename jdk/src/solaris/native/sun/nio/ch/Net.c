@@ -241,6 +241,10 @@ Java_sun_nio_ch_Net_socket0(JNIEnv *env, jclass cl, jboolean preferIPv6,
     int domain = AF_INET;
 #endif
 
+    //The protocol specifies a particular protocol to be used with the
+    //socket.  Normally only a single protocol exists to support a
+    //particular socket type within a given protocol family, in which case
+    //protocol can be specified as 0
     fd = socket(domain, type, 0);
     if (fd < 0) {
         return handleSocketError(env, errno);

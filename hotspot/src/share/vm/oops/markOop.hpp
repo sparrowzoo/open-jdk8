@@ -28,18 +28,22 @@
 #include "oops/oop.hpp"
 
 // The markOop describes the header of an object.
+// markOop描述对象的标头
 //
 // Note that the mark is not a real oop but just a word.
 // It is placed in the oop hierarchy for historical reasons.
+
+//注意 这个标记不是真实的对象，它只是一个字
+//它在oop的包下，是因为历史原因
 //
 // Bit-format of an object header (most significant first, big endian layout below):
-//
+// 对象头的位格式 字节序如下
 //  32 bits:
 //  --------
-//             hash:25 ------------>| age:4    biased_lock:1 lock:2 (normal object)
-//             JavaThread*:23 epoch:2 age:4    biased_lock:1 lock:2 (biased object)
+//             hash:25 ------------>| age:4    biased_lock:1 lock:2 (normal object)//MaxTenuringThreshold （GC次数）最大为15
+//             JavaThread*:23 epoch:2 age:4    biased_lock:1 lock:2 (biased object)//偏向
 //             size:32 ------------------------------------------>| (CMS free block)
-//             PromotedObject*:29 ---------->| promo_bits:3 ----->| (CMS promoted object)
+//             PromotedObject*:29 ---------->| promo_bits:3 ----->| (CMS promoted object) //晋升对象
 //
 //  64 bits:
 //  --------
@@ -48,6 +52,8 @@
 //  PromotedObject*:61 --------------------->| promo_bits:3 ----->| (CMS promoted object)
 //  size:64 ----------------------------------------------------->| (CMS free block)
 //
+//  64 bits COOPS:
+//  --------
 //  unused:25 hash:31 -->| cms_free:1 age:4    biased_lock:1 lock:2 (COOPs && normal object)
 //  JavaThread*:54 epoch:2 cms_free:1 age:4    biased_lock:1 lock:2 (COOPs && biased object)
 //  narrowOop:32 unused:24 cms_free:1 unused:4 promo_bits:3 ----->| (COOPs && CMS promoted object)
@@ -74,10 +80,16 @@
 //    unlocked object.
 //
 //    Note also that the biased state contains the age bits normally
-//    contained in the object header. Large increases in scavenge
+//    contained in the object header.
+//    注意：偏向状态, 对象头 通常包含年龄位
+//
+//
+//    Large increases in scavenge
 //    times were seen when these bits were absent and an arbitrary age
-//    assigned to all biased objects, because they tended to consume a
-//    significant fraction of the eden semispaces and were not
+//    assigned to all biased objects,
+//    随着GC清除次数的增加，我们会发现，当这些位不存在的时侯会指定任意的age 给这些偏向锁对象
+//    because they tended to consume a
+//    significant fraction of the eden semispaces and were not//(semispaces:From-space and To-space)
 //    promoted promptly, causing an increase in the amount of copying
 //    performed. The runtime system aligns all JavaThread* pointers to
 //    a very large value (currently 128 bytes (32bVM) or 256 bytes (64bVM))
@@ -159,7 +171,7 @@ class markOopDesc: public oopDesc {
          unlocked_value           = 1,
          monitor_value            = 2,
          marked_value             = 3,
-         biased_lock_pattern      = 5
+         biased_lock_pattern      = 5//101
   };
 
   enum { no_hash                  = 0 };  // no hash value assigned
@@ -389,7 +401,7 @@ class markOopDesc: public oopDesc {
   uintptr_t cms_encoding() const {
     return mask_bits(value() >> cms_shift, cms_mask);
   }
-  bool is_cms_free_chunk() const {
+  bool is_cms_free_chunk() const {T
     return is_neutral() &&
            (cms_encoding() & cms_free_chunk_pattern) == cms_free_chunk_pattern;
   }

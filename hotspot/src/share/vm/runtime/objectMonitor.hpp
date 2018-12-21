@@ -135,22 +135,26 @@ class ObjectMonitor {
   ObjectWaiter* next_waiter(ObjectWaiter* o)                           { return o->_next; }
   Thread* thread_of_waiter(ObjectWaiter* o)                            { return o->_thread; }
 
+
+
+  //@harry ObjectMonitor Class
+
   // initialize the monitor, exception the semaphore, all other fields
   // are simple integers or pointers
   ObjectMonitor() {
-    _header       = NULL;
+    _header       = NULL;  //displaced object header word - mark
     _count        = 0;
-    _waiters      = 0,
+    _waiters      = 0,     // number of waiting threads
     _recursions   = 0;
-    _object       = NULL;
-    _owner        = NULL;
-    _WaitSet      = NULL;
+    _object       = NULL;  //backward object pointer - strong root
+    _owner        = NULL;  //pointer to owning thread OR BasicLock
+    _WaitSet      = NULL;  //LL of threads wait()ing on the monitor
     _WaitSetLock  = 0 ;
     _Responsible  = NULL ;
     _succ         = NULL ;
     _cxq          = NULL ;
     FreeNext      = NULL ;
-    _EntryList    = NULL ;
+    _EntryList    = NULL ; // number of waiting threads
     _SpinFreq     = 0 ;
     _SpinClock    = 0 ;
     OwnerIsThread = 0 ;
