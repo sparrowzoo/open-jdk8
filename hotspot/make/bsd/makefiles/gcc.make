@@ -246,9 +246,9 @@ else
 endif
 
 # Compiler warnings are treated as errors
-#ifneq ($(COMPILER_WARNINGS_FATAL),false)
-#  WARNINGS_ARE_ERRORS = -Werror
-#endif
+ifneq ($(COMPILER_WARNINGS_FATAL),false)
+  WARNINGS_ARE_ERRORS = -Werror
+endif
 
 ifeq ($(USE_CLANG), true)
   # However we need to clean the code up before we can unrestrictedly enable this option with Clang
@@ -273,7 +273,7 @@ endif
 
 CFLAGS_WARN/DEFAULT = $(WARNINGS_ARE_ERRORS) $(WARNING_FLAGS)
 # Special cases
-CFLAGS_WARN/BYFILE = $(CFLAGS_WARN/$@)$(CFLAGS_WARN/DEFAULT$(CFLAGS_WARN/$@)) 
+CFLAGS_WARN/BYFILE = $(CFLAGS_WARN/$@)$(CFLAGS_WARN/DEFAULT$(CFLAGS_WARN/$@))
 # XXXDARWIN: for _dyld_bind_fully_image_containing_address
 ifeq ($(OS_VENDOR), Darwin)
   CFLAGS_WARN/os_bsd.o = $(CFLAGS_WARN/DEFAULT) -Wno-deprecated-declarations
@@ -327,14 +327,11 @@ endif
 
 # Flags for generating make dependency flags.
 DEPFLAGS = -MMD -MP -MF $(DEP_DIR)/$(@:%=%.d)
-#ifeq ($(USE_CLANG),)
-#  ifneq ($(CC_VER_MAJOR), 2)
-#    DEPFLAGS += -fpch-deps
-#  endif
-#endif
-
-LFLAGS += -stdlib=libstdc++
-
+ifeq ($(USE_CLANG),)
+  ifneq ($(CC_VER_MAJOR), 2)
+    DEPFLAGS += -fpch-deps
+  endif
+endif
 
 # -DDONT_USE_PRECOMPILED_HEADER will exclude all includes in precompiled.hpp.
 ifeq ($(USE_PRECOMPILED_HEADER),0)

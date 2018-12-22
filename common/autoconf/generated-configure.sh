@@ -26664,11 +26664,11 @@ fi
     fi
 
     # Fail-fast: verify we're building on Xcode 4, we cannot build with Xcode 5 or later
-    #XCODE_VERSION=`$XCODEBUILD -version | grep '^Xcode ' | sed 's/Xcode //'`
-    # XC_VERSION_PARTS=( ${XCODE_VERSION//./ } )
-    #if test ! "${XC_VERSION_PARTS[0]}" = "4"; then
-    #  as_fn_error $? "Xcode 4 is required to build JDK 8, the version found was $XCODE_VERSION. Use --with-xcode-path to specify the location of Xcode 4 or make Xcode 4 active by using xcode-select." "$LINENO" 5
-    #fi
+    XCODE_VERSION=`$XCODEBUILD -version | grep '^Xcode ' | sed 's/Xcode //'`
+    XC_VERSION_PARTS=( ${XCODE_VERSION//./ } )
+    if test ! "${XC_VERSION_PARTS[0]}" = "4"; then
+      as_fn_error $? "Xcode 4 is required to build JDK 8, the version found was $XCODE_VERSION. Use --with-xcode-path to specify the location of Xcode 4 or make Xcode 4 active by using xcode-select." "$LINENO" 5
+    fi
 
     # Some versions of Xcode 5 command line tools install gcc and g++ as symlinks to
     # clang and clang++, which will break the build. So handle that here if we need to.
@@ -27763,20 +27763,16 @@ $as_echo "no, keeping CC" >&6; }
     COMPILER_VERSION_OUTPUT=`$COMPILER -V 2>&1`
     # Check that this is likely to be the Solaris Studio cc.
     $ECHO "$COMPILER_VERSION_OUTPUT" | $GREP "^.*: Sun $COMPILER_NAME" > /dev/null
-
-#    
-#if test $? -ne 0; then
-#      ALT_VERSION_OUTPUT=`$COMPILER --version 2>&1`
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&5
-#$as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with -V was: \"$COMPILER_VERSION_OUTPUT\"" >&5
-#$as_echo "$as_me: The result from running with -V was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
-#$as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
-#      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
-#    fi
-
-
+    if test $? -ne 0; then
+      ALT_VERSION_OUTPUT=`$COMPILER --version 2>&1`
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&5
+$as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with -V was: \"$COMPILER_VERSION_OUTPUT\"" >&5
+$as_echo "$as_me: The result from running with -V was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
+$as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+    fi
     # Remove usage instructions (if present), and
     # collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT | \
@@ -27790,17 +27786,16 @@ $as_echo "no, keeping CC" >&6; }
     COMPILER_VERSION_OUTPUT=`$COMPILER -qversion 2>&1`
     # Check that this is likely to be the IBM XL C compiler.
     $ECHO "$COMPILER_VERSION_OUTPUT" | $GREP "IBM XL C" > /dev/null
-#    if test $? -ne 0; then
-#      ALT_VERSION_OUTPUT=`$COMPILER --version 2>&1`
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&5
-#$as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with -qversion was: \"$COMPILER_VERSION_OUTPUT\"" >&5
-#$as_echo "$as_me: The result from running with -qversion was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
-#      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
-#$as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
-#      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
-#    fi
-
+    if test $? -ne 0; then
+      ALT_VERSION_OUTPUT=`$COMPILER --version 2>&1`
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&5
+$as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with -qversion was: \"$COMPILER_VERSION_OUTPUT\"" >&5
+$as_echo "$as_me: The result from running with -qversion was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
+$as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+    fi
     # Collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT`
     COMPILER_VERSION_NUMBER=`$ECHO $COMPILER_VERSION_OUTPUT | \
@@ -27861,7 +27856,7 @@ $as_echo "$as_me: The result from running with --version was: \"$COMPILER_VERSIO
 $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$COMPILER_VERSION_OUTPUT\"" >&5
 $as_echo "$as_me: The result from running with --version was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT`
@@ -29517,7 +29512,7 @@ $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not se
 $as_echo "$as_me: The result from running with -V was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
 $as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Remove usage instructions (if present), and
     # collapse compiler output into a single line
@@ -29540,7 +29535,7 @@ $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not se
 $as_echo "$as_me: The result from running with -qversion was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&5
 $as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUTPUT\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT`
@@ -29558,7 +29553,7 @@ $as_echo "$as_me: The result from running with --version was: \"$ALT_VERSION_OUT
 $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running it was: \"$COMPILER_VERSION_OUTPUT\"" >&5
 $as_echo "$as_me: The result from running it was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT`
@@ -29578,7 +29573,7 @@ $as_echo "$as_me: The result from running it was: \"$COMPILER_VERSION_OUTPUT\"" 
 $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$COMPILER_VERSION\"" >&5
 $as_echo "$as_me: The result from running with --version was: \"$COMPILER_VERSION\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Remove Copyright and legalese from version string, and
     # collapse into a single line
@@ -29602,7 +29597,7 @@ $as_echo "$as_me: The result from running with --version was: \"$COMPILER_VERSIO
 $as_echo "$as_me: The $COMPILER_NAME compiler (located as $COMPILER) does not seem to be the required $TOOLCHAIN_TYPE compiler." >&6;}
       { $as_echo "$as_me:${as_lineno-$LINENO}: The result from running with --version was: \"$COMPILER_VERSION_OUTPUT\"" >&5
 $as_echo "$as_me: The result from running with --version was: \"$COMPILER_VERSION_OUTPUT\"" >&6;}
-      #as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
+      as_fn_error $? "A $TOOLCHAIN_TYPE compiler is required. Try setting --with-tools-dir." "$LINENO" 5
     fi
     # Collapse compiler output into a single line
     COMPILER_VERSION_STRING=`$ECHO $COMPILER_VERSION_OUTPUT`
