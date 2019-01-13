@@ -4,7 +4,6 @@ target
 logs
 .DS_Store
 .hg
-build/
 dist/
 nbproject/private/
 webrev
