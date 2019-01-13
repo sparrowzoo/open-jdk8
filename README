@@ -50,3 +50,7 @@ ERROR
      return is_neutral() &&
 ```
 vim edit markOop.hpp
+
+[Error] encoded value was less than 0: encode(-8.326673E-17, 5.0, 11.0, 16.0)
+---
+BUG  https://bugs.openjdk.java.net/browse/JDK-8016451
