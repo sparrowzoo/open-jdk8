@@ -39,3 +39,14 @@ is 3.81 or newer. Note that on Solaris, GNU make is called "gmake".
 
 Complete details are available in the file:
      http://hg.openjdk.java.net/jdk8/jdk8/raw-file/tip/README-builds.html
+
+ERROR
+---
+```
+~/open-jdk8/hotspot/src/share/vm/oops/markOop.hpp:404:35: error: 'T' was not declared in this scope
+   bool is_cms_free_chunk() const {T
+                                   ^
+~/open-jdk8/hotspot/src/share/vm/oops/markOop.hpp:405:5: error: expected ';' before 'return'
+     return is_neutral() &&
+```
+vim edit markOop.hpp

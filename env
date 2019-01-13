@@ -1,0 +1,19 @@
+PATH=$PATH:"/usr/lib/jvm/jre-openjdk/bin"
+
+export LANG=C
+export ALLOW_DOWNLOADS=true
+export ALT_JDK_IMPORT_PATH="/usr/java/jdk1.7.0_80"
+export ALLOW_DOWNLOADS=true
+export HOTSPOT_BUILD_JOBS=2
+export SKIP_COMPARE_IMAGES=true
+export BUILD_LANGTOOLS=true
+export BUILD_HOTSPOT=true
+export BUILD_JDK=true
+export BUILD_DEPLOY=false
+export BUILD_INSTALL=false
+export ANT_HOME=/data/jdk/ant
+export ARCH_DATA_MODEL=64
+
+unset JAVA_HOME
+unset CLASSPATH
+unset LD_LIBRARY_PATH
