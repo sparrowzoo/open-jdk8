@@ -401,7 +401,7 @@ class markOopDesc: public oopDesc {
   uintptr_t cms_encoding() const {
     return mask_bits(value() >> cms_shift, cms_mask);
   }
-  bool is_cms_free_chunk() const {T
+  bool is_cms_free_chunk() const {
     return is_neutral() &&
            (cms_encoding() & cms_free_chunk_pattern) == cms_free_chunk_pattern;
   }
