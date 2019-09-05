@@ -3314,6 +3314,7 @@ void Threads::threads_do(ThreadClosure* tc) {
   // If CompilerThreads ever become non-JavaThreads, add them here
 }
 
+//todo init class_loader
 jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
 
   extern void JDK_Version_init();
@@ -3430,6 +3431,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
   ObjectMonitor::Initialize() ;
 
   // Initialize global modules
+  //todo @harry init class_loader
   jint status = init_globals();
   if (status != JNI_OK) {
     delete main_thread;

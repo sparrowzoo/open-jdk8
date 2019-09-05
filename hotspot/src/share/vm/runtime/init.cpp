@@ -96,6 +96,7 @@ jint init_globals() {
   HandleMark hm;
   management_init();
   bytecodes_init();
+  //todo @harry
   classLoader_init();
   codeCache_init();
   VM_Version_init();
